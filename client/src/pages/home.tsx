@@ -166,7 +166,7 @@ export default function Home() {
             <div className="bg-light-gray rounded-2xl p-8 mb-8 shadow-sm text-center">
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 items-end">
                 <div className="md:col-span-2 lg:col-span-3">
-                  <label className="block text-sm font-semibold text-dark-gray mb-2">
+                  <label className="block text-sm font-semibold text-dark-gray mb-2 text-left">
                     <MapPin className="inline w-4 h-4 mr-2" />
                     Select Destination
                   </label>
