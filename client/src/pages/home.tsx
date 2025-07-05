@@ -184,7 +184,7 @@ export default function Home() {
                   </Select>
                 </div>
                 <div className="md:col-span-1 lg:col-span-1">
-                  <label className="block text-sm font-semibold text-dark-gray mb-2">
+                  <label className="block text-sm font-semibold text-dark-gray mb-2 text-left">
                     <Thermometer className="inline w-4 h-4 mr-2" />
                     Temperature Unit
                   </label>
