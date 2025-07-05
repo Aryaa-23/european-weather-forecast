@@ -45,7 +45,7 @@ export default function Home() {
   const { toast } = useToast();
 
   const { data: weatherData, isLoading, error, refetch } = useQuery({
-    queryKey: ["/api/weather", selectedCity, temperatureUnit],
+    queryKey: [`/api/weather/${selectedCity}/${temperatureUnit}`],
     enabled: !!selectedCity,
   });
 
