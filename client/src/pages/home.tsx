@@ -242,33 +242,70 @@ export default function Home() {
 
             {/* Weather Forecast Display */}
             {weatherData && Array.isArray(weatherData) && !isLoading && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 md:gap-4">
-                {weatherData.map((day: WeatherData, index: number) => (
-                  <Card key={index} className="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
-                    <CardContent className="p-3 md:p-4 lg:p-5 text-center">
-                      <div className="text-xs md:text-sm font-semibold text-gray-500 mb-1 md:mb-2">{day.dayName}</div>
-                      <div className="text-xs text-gray-400 mb-2 md:mb-3">{day.date}</div>
-                      
-                      <div className="mb-2 md:mb-3 flex justify-center">
-                        <div className="scale-75 md:scale-90 lg:scale-100">
-                          {getWeatherIcon(day.weatherCode)}
+              <div className="space-y-4">
+                {/* First 4 cards */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                  {weatherData.slice(0, 4).map((day: WeatherData, index: number) => (
+                    <Card key={index} className="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+                      <CardContent className="p-3 md:p-4 lg:p-5 text-center">
+                        <div className="text-xs md:text-sm font-semibold text-gray-500 mb-1 md:mb-2">{day.dayName}</div>
+                        <div className="text-xs text-gray-400 mb-2 md:mb-3">{day.date}</div>
+                        
+                        <div className="mb-2 md:mb-3 flex justify-center">
+                          <div className="scale-75 md:scale-90 lg:scale-100">
+                            {getWeatherIcon(day.weatherCode)}
+                          </div>
                         </div>
-                      </div>
-                      
-                      <div className="mb-2 md:mb-3">
-                        <div className="text-lg md:text-xl lg:text-2xl font-bold text-dark-gray">{day.temperature}°{temperatureUnit === 'celsius' ? 'C' : 'F'}</div>
-                        <div className="text-xs md:text-sm text-gray-500">{day.tempRange}</div>
-                      </div>
-                      
-                      <div className="text-xs md:text-sm font-medium text-gray-600 mb-1 md:mb-2 line-clamp-2">{day.condition}</div>
-                      
-                      <div className="flex items-center justify-center text-xs text-gray-500">
-                        <Droplets className="w-3 h-3 mr-1 text-blue-400" />
-                        <span>{day.precipitation}%</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                        
+                        <div className="mb-2 md:mb-3">
+                          <div className="text-lg md:text-xl lg:text-2xl font-bold text-dark-gray">{day.temperature}°{temperatureUnit === 'celsius' ? 'C' : 'F'}</div>
+                          <div className="text-xs md:text-sm text-gray-500">{day.tempRange}</div>
+                        </div>
+                        
+                        <div className="text-xs md:text-sm font-medium text-gray-600 mb-1 md:mb-2 line-clamp-2">{day.condition}</div>
+                        
+                        <div className="flex items-center justify-center text-xs text-gray-500">
+                          <Droplets className="w-3 h-3 mr-1 text-blue-400" />
+                          <span>{day.precipitation}%</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+                
+                {/* Last 3 cards centered */}
+                {weatherData.length > 4 && (
+                  <div className="flex justify-center">
+                    <div className="grid grid-cols-3 gap-3 md:gap-4 max-w-2xl">
+                      {weatherData.slice(4).map((day: WeatherData, index: number) => (
+                        <Card key={index + 4} className="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
+                          <CardContent className="p-3 md:p-4 lg:p-5 text-center">
+                            <div className="text-xs md:text-sm font-semibold text-gray-500 mb-1 md:mb-2">{day.dayName}</div>
+                            <div className="text-xs text-gray-400 mb-2 md:mb-3">{day.date}</div>
+                            
+                            <div className="mb-2 md:mb-3 flex justify-center">
+                              <div className="scale-75 md:scale-90 lg:scale-100">
+                                {getWeatherIcon(day.weatherCode)}
+                              </div>
+                            </div>
+                            
+                            <div className="mb-2 md:mb-3">
+                              <div className="text-lg md:text-xl lg:text-2xl font-bold text-dark-gray">{day.temperature}°{temperatureUnit === 'celsius' ? 'C' : 'F'}</div>
+                              <div className="text-xs md:text-sm text-gray-500">{day.tempRange}</div>
+                            </div>
+                            
+                            <div className="text-xs md:text-sm font-medium text-gray-600 mb-1 md:mb-2 line-clamp-2">{day.condition}</div>
+                            
+                            <div className="flex items-center justify-center text-xs text-gray-500">
+                              <Droplets className="w-3 h-3 mr-1 text-blue-400" />
+                              <span>{day.precipitation}%</span>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
