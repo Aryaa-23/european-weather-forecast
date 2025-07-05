@@ -96,7 +96,8 @@ This is a full-stack web application built with a React frontend and Express.js 
 
 ```
 Changelog:
-- July 05, 2025. Initial setup
+- July 05, 2025. Initial setup with weather forecast app
+- July 05, 2025. Fixed 7Timer API integration with proper date parsing and weather condition mapping
 ```
 
 ## User Preferences

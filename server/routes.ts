@@ -35,28 +35,44 @@ function convertTemperature(celsius: number, unit: string): number {
 function getWeatherCondition(weatherCode: string): string {
   const conditionMap: Record<string, string> = {
     clear: "Sunny",
+    clearday: "Sunny",
+    clearnight: "Clear",
     pcloudy: "Partly Cloudy",
+    pcloudyday: "Partly Cloudy", 
+    pcloudynight: "Partly Cloudy",
     mcloudy: "Mostly Cloudy",
+    mcloudyday: "Mostly Cloudy",
+    mcloudynight: "Mostly Cloudy",
     cloudy: "Cloudy",
+    cloudyday: "Cloudy",
+    cloudynight: "Cloudy",
     humid: "Humid",
     lightrain: "Light Rain",
+    lightrainday: "Light Rain",
+    lightrainnight: "Light Rain", 
+    oshower: "Light Rain",
+    ishower: "Heavy Rain",
     rain: "Rain",
+    rainday: "Rain",
+    rainnight: "Rain",
     snow: "Snow",
-    tstorm: "Thunderstorm"
+    snowday: "Snow",
+    snownight: "Snow",
+    tstorm: "Thunderstorm",
+    tstormday: "Thunderstorm",
+    tstormnight: "Thunderstorm"
   };
-  return conditionMap[weatherCode] || "Unknown";
+  return conditionMap[weatherCode] || "Partly Cloudy";
 }
 
-function formatDate(dateInit: number): string {
-  const date = new Date(dateInit * 1000);
+function formatDate(date: Date): string {
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-function getDayName(dateInit: number, index: number): string {
+function getDayName(date: Date, index: number): string {
   if (index === 0) return "Today";
   if (index === 1) return "Tomorrow";
   
-  const date = new Date(dateInit * 1000);
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   return days[date.getDay()];
 }
@@ -97,20 +113,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const minTemp = convertTemperature(temp2mMin, unit);
         const maxTemp = convertTemperature(temp2mMax + 3, unit);
         
-        // Calculate date from init timestamp and timepoint
-        const initDate = new Date(apiData.init);
-        const forecastDate = new Date(initDate.getTime() + (item.timepoint * 3600000)); // timepoint is in hours
-        const dateInit = Math.floor(forecastDate.getTime() / 1000);
+        // Parse init date (format: YYYYMMDDHH)
+        const initStr = apiData.init.toString();
+        const year = parseInt(initStr.substring(0, 4));
+        const month = parseInt(initStr.substring(4, 6)) - 1; // Month is 0-indexed
+        const day = parseInt(initStr.substring(6, 8));
+        const hour = parseInt(initStr.substring(8, 10));
+        
+        const initDate = new Date(year, month, day, hour);
+        
+        // Calculate forecast date by adding timepoint hours
+        const forecastDate = new Date(initDate);
+        forecastDate.setHours(initDate.getHours() + item.timepoint);
+        
+        // Convert weather code to match frontend expectations
+        let weatherCode = item.weather || "clear";
+        // Remove day/night suffix for icon mapping
+        const cleanWeatherCode = weatherCode.replace(/(day|night)$/, '');
         
         return {
-          dayName: getDayName(dateInit, index),
-          date: formatDate(dateInit),
+          dayName: getDayName(forecastDate, index),
+          date: formatDate(forecastDate),
           temperature: currentTemp,
           tempRange: `${minTemp}° / ${maxTemp}°`,
-          condition: getWeatherCondition(item.weather || "clear"),
+          condition: getWeatherCondition(weatherCode),
           precipitation: Math.min(Math.max(0, (item.prec_amount || 0) * 10), 100), // Convert to percentage
-          icon: item.weather || "clear",
-          weatherCode: item.weather || "clear"
+          icon: cleanWeatherCode,
+          weatherCode: cleanWeatherCode
         };
       });
 
