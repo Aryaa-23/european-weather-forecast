@@ -44,7 +44,7 @@ export default function Home() {
   const [temperatureUnit, setTemperatureUnit] = useState<"celsius" | "fahrenheit">("celsius");
   const { toast } = useToast();
 
-  const { data: weatherData, isLoading, error, refetch } = useQuery({
+  const { data: weatherData, isLoading, error, refetch } = useQuery<WeatherData[]>({
     queryKey: [`/api/weather/${selectedCity}/${temperatureUnit}`],
     enabled: !!selectedCity,
   });
@@ -109,7 +109,6 @@ export default function Home() {
           </div>
         </div>
       </header>
-
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white overflow-hidden">
         <div className="absolute inset-0 opacity-20">
@@ -148,7 +147,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Weather Forecast Tool */}
       <section id="weather-section" className="py-16 bg-white">
         <div className="container mx-auto px-4">
@@ -165,15 +163,15 @@ export default function Home() {
             </div>
 
             {/* City Selection */}
-            <div className="bg-light-gray rounded-2xl p-8 mb-8 shadow-sm">
-              <div className="flex flex-col lg:flex-row gap-6 items-end">
-                <div className="flex-1">
+            <div className="bg-light-gray rounded-2xl p-8 mb-8 shadow-sm text-center">
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 items-end">
+                <div className="md:col-span-2 lg:col-span-3">
                   <label className="block text-sm font-semibold text-dark-gray mb-2">
                     <MapPin className="inline w-4 h-4 mr-2" />
                     Select Destination
                   </label>
                   <Select value={selectedCity} onValueChange={setSelectedCity}>
-                    <SelectTrigger className="w-full p-4 bg-white border border-gray-300 rounded-xl text-lg font-medium">
+                    <SelectTrigger className="w-full h-14 p-4 bg-white border border-gray-300 rounded-xl text-lg font-medium">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -185,13 +183,13 @@ export default function Home() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="lg:w-48">
+                <div className="md:col-span-1 lg:col-span-1">
                   <label className="block text-sm font-semibold text-dark-gray mb-2">
                     <Thermometer className="inline w-4 h-4 mr-2" />
                     Temperature Unit
                   </label>
                   <Select value={temperatureUnit} onValueChange={(value) => setTemperatureUnit(value as "celsius" | "fahrenheit")}>
-                    <SelectTrigger className="w-full p-4 bg-white border border-gray-300 rounded-xl text-lg font-medium">
+                    <SelectTrigger className="w-full h-14 p-4 bg-white border border-gray-300 rounded-xl text-lg font-medium">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -200,18 +198,20 @@ export default function Home() {
                     </SelectContent>
                   </Select>
                 </div>
-                <Button 
-                  className="bg-travel-blue text-white px-8 py-4 text-lg hover:bg-blue-700 shadow-lg whitespace-nowrap"
-                  onClick={handleGetForecast}
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                  ) : (
-                    <Search className="w-5 h-5 mr-2" />
-                  )}
-                  Get Forecast
-                </Button>
+                <div className="md:col-span-3 lg:col-span-1 flex items-end">
+                  <Button 
+                    className="w-full h-14 bg-travel-blue text-white px-6 text-lg hover:bg-blue-700 shadow-lg whitespace-nowrap rounded-xl font-medium"
+                    onClick={handleGetForecast}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    ) : (
+                      <Search className="w-5 h-5 mr-2" />
+                    )}
+                    Get Forecast
+                  </Button>
+                </div>
               </div>
             </div>
 
@@ -241,7 +241,7 @@ export default function Home() {
             )}
 
             {/* Weather Forecast Display */}
-            {weatherData && !isLoading && (
+            {weatherData && Array.isArray(weatherData) && !isLoading && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
                 {weatherData.map((day: WeatherData, index: number) => (
                   <Card key={index} className="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
@@ -272,7 +272,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Booking CTA Section */}
       <section className="py-16 bg-gradient-to-r from-orange-400 to-yellow-500">
         <div className="container mx-auto px-4">
@@ -301,7 +300,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Features Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
@@ -339,7 +337,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Footer */}
       <footer className="bg-dark-gray text-white py-12">
         <div className="container mx-auto px-4">
