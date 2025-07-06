@@ -11,14 +11,6 @@ A modern, responsive weather forecast application designed for European travel a
 - **⚡ Real-time Data** - Live weather information from reliable sources
 - **🎨 Modern UI** - Clean, professional interface with smooth animations
 
-## 📸 Screenshots
-
-![Weather Dashboard](attached_assets/image_1751687435097.png)
-*Main dashboard showing 7-day forecast for selected city*
-
-![City Selection](attached_assets/image_1751691303539.png)
-*Easy city selection with country flags*
-
 ## 🚀 Technology Stack
 
 ### Frontend
